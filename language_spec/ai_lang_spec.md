@@ -85,22 +85,22 @@ show_ui()
 NoDCo now supports a simple, human-readable text format for writing programs. This format is easy to write, read, and share.
 
 ### Syntax
-- `label <id> "<text>"` — Create a label with the given id and text.
+- `label <id> text="<text>"` — Create a label with the given id and text.
 - `show_ui` — Show the UI.
 - Lines starting with `#` are comments.
 
 ### Example
 ```
 # Hello World in NoDCo Text
-label 0 "Hello World"
+label 0 text="Hello World"
 show_ui
 ```
 
-### Text to Bytecode Mapping
-| Text Command                | Bytecode (Hex)                        |
-|-----------------------------|----------------------------------------|
-| `label 0 "Hello World"`     | `10 02 00 01 01 48 65 6C ... 64`       |
-| `show_ui`                   | `13`                                   |
+### Property Encoding
+String properties are encoded as:
+- `[property_count][property_id][string_length][string_bytes]...`
+- For example, `label 0 text="Hello"` encodes as:
+  - `0x10 0x01 0x00 0x01 0x01 0x05 48 65 6C 6C 6F` (opcode, element_type, id, property_count, property_id, length, bytes)
 
 ### Usage
 1. Write your program in a `.ndc`, `.nodco`, or `.txt` file.
@@ -109,6 +109,12 @@ show_ui
    cargo run --release -- ../path/to/your_program.ndc
    ```
 3. The compiler will output a `.kbj` binary file for the VM.
+4. Run the VM with the `.kbj` file to see your UI.
+
+### Supported Properties
+- `text` (property_id = 1): Used for label/button/input text.
+
+More properties and UI elements will be added as the language evolves!
 
 ---
 

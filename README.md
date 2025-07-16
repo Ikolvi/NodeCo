@@ -63,7 +63,7 @@ You can now write NoDCo programs in a simple, human-readable text format and com
 
 ```
 # Hello World in NoDCo Text
-label 0 "Hello World"
+label 0 text="Hello World"
 show_ui
 ```
 
@@ -81,7 +81,10 @@ cargo run --release -- ../path/to/hello.ndc
 This will produce `hello.kbj` in the same directory.
 
 ## Supported Commands
-- `label <id> "<text>"` — Create a label with the given id and text.
+- `label <id> text="<text>"` — Create a label with the given id and text.
 - `show_ui` — Show the UI.
 
-More commands will be added as the language evolves! 
+## String Properties
+You can specify string properties for UI elements using key-value syntax, e.g., `text="Hello World"`. The compiler and VM now support string properties for labels and other UI elements.
+
+More commands and properties will be added as the language evolves! 

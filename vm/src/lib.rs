@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::{self, Read};
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub enum Instruction {
@@ -21,6 +22,7 @@ pub struct GuiElement {
     pub element_type: u8,
     pub element_id: u8,
     pub properties: Vec<(u8, u8)>,
+    pub string_properties: HashMap<u8, String>,
     pub handler_id: Option<u8>,
     pub children: Vec<GuiElement>,
     pub value: Option<String>, // for input state
@@ -53,35 +55,39 @@ fn render_element(
 ) {
     match el.element_type {
         1 => { // Button
-            let text = el.properties.iter().find(|(pid, _)| *pid == 1)
-                .map(|(_, v)| format!("{}", v))
-                .unwrap_or("Button".to_string());
+            let text = el.string_properties.get(&1)
+                .cloned()
+                .unwrap_or_else(|| el.properties.iter().find(|(pid, _)| *pid == 1)
+                    .map(|(_, v)| format!("{}", v))
+                    .unwrap_or("Button".to_string()));
             if ui.button(text).clicked() {
                 if let Some(handler_id) = el.handler_id {
                     println!("[NodeCo] Button {} clicked! Handler: {}", el.element_id, handler_id);
-                    // Here you would invoke the NodeCo handler logic
                 }
             }
         }
         2 => { // Label
-            let text = label_states.get(&el.element_id).cloned().unwrap_or_else(|| {
-                el.properties.iter().find(|(pid, _)| *pid == 1)
-                    .map(|(_, v)| format!("{}", v))
-                    .unwrap_or("Label".to_string())
-            });
+            let text = el.string_properties.get(&1)
+                .cloned()
+                .unwrap_or_else(|| label_states.get(&el.element_id).cloned().unwrap_or_else(||
+                    el.properties.iter().find(|(pid, _)| *pid == 1)
+                        .map(|(_, v)| format!("{}", v))
+                        .unwrap_or("Label".to_string())
+                ));
             ui.label(text);
         }
         3 => { // Input
             let entry = input_states.entry(el.element_id).or_insert_with(|| {
-                el.properties.iter().find(|(pid, _)| *pid == 1)
-                    .map(|(_, v)| format!("{}", v))
-                    .unwrap_or(String::new())
+                el.string_properties.get(&1)
+                    .cloned()
+                    .unwrap_or_else(|| el.properties.iter().find(|(pid, _)| *pid == 1)
+                        .map(|(_, v)| format!("{}", v))
+                        .unwrap_or(String::new()))
             });
             let response = ui.text_edit_singleline(entry);
             if response.changed() {
                 if let Some(handler_id) = el.handler_id {
                     println!("[NodeCo] Input {} changed! Handler: {}", el.element_id, handler_id);
-                    // Example: update label 1 with input value
                     label_states.insert(1, entry.clone());
                 }
             }
@@ -114,6 +120,7 @@ pub fn execute_program_gui(program: &Program) {
                     element_type: *element_type,
                     element_id: *element_id,
                     properties: properties.clone(),
+                    string_properties: HashMap::new(),
                     handler_id: None,
                     children: Vec::new(),
                     value: None,
@@ -196,15 +203,32 @@ pub fn parse_kbj_file(path: &str) -> io::Result<Program> {
                     let element_id = buf[i+2];
                     let property_count = buf[i+3];
                     let mut properties = Vec::new();
+                    let mut string_properties = HashMap::new();
                     let mut j = 0;
-                    while j < property_count as usize && i + 4 + 2*j + 1 < buf.len() {
-                        let prop_id = buf[i+4 + 2*j];
-                        let value = buf[i+4 + 2*j + 1];
-                        properties.push((prop_id, value));
+                    let mut prop_idx = i + 4;
+                    while j < property_count as usize && prop_idx < buf.len() {
+                        let prop_id = buf[prop_idx];
+                        if prop_id == 1 && prop_idx + 1 < buf.len() {
+                            let str_len = buf[prop_idx + 1] as usize;
+                            if prop_idx + 2 + str_len - 1 < buf.len() {
+                                let str_bytes = &buf[prop_idx + 2 .. prop_idx + 2 + str_len];
+                                if let Ok(s) = std::str::from_utf8(str_bytes) {
+                                    string_properties.insert(prop_id, s.to_string());
+                                }
+                                prop_idx += 2 + str_len;
+                            } else {
+                                break;
+                            }
+                        } else if prop_idx + 1 < buf.len() {
+                            properties.push((prop_id, buf[prop_idx + 1]));
+                            prop_idx += 2;
+                        } else {
+                            break;
+                        }
                         j += 1;
                     }
-                    instructions.push(Instruction::CreateUI { element_type, element_id, property_count, properties });
-                    i += 4 + 2 * property_count as usize;
+                    instructions.push(Instruction::CreateUI { element_type, element_id, property_count, properties: properties.clone() });
+                    i = prop_idx;
                 } else { break; }
             }
             0x11 => {
