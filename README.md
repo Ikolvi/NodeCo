@@ -1,5 +1,9 @@
 # NodeCo
 
+<p align="center">
+  <img src="assets/NoDCoLogo.png" alt="NodeCo" width="200"/>
+</p>
+
 NodeCo is an AI-friendly, multiplatform, binary programming language designed for seamless AI parsing, code generation, and execution. It supports basic programming constructs, advanced UI creation, event handling, and is easily extensible for future features like cloud updates and mobile support.
 
 ## Features
@@ -10,11 +14,6 @@ NodeCo is an AI-friendly, multiplatform, binary programming language designed fo
 - **Styling and layout** (width, height, color, containers)
 - **Cloud update and extensibility**
 - **Easy integration with AI tools and prompt-based code generation**
-
-## Logo & Icon
-The NodeCo logo and application icon are located in the `assets/` folder:
-- ![NodeCo Logo](assets/NoDCoLogo.png)
-- ![NodeCo Icon](assets/nodeco.ico)
 
 ## Documentation
 - [Language Specification](https://github.com/yourusername/yourrepo/blob/main/language_spec/ai_lang_spec.md)
