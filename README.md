@@ -13,7 +13,7 @@ NodeCo is an AI-friendly, multiplatform, binary programming language designed fo
 
 ## Logo & Icon
 The NodeCo logo and application icon are located in the `assets/` folder:
-- ![NodeCo Logo](assets\NoDCoLogo.png)
+- ![NodeCo Logo](assets/NoDCoLogo.png)
 - ![NodeCo Icon](assets/nodeco.ico)
 
 ## Documentation
