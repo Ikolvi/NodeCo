@@ -30,8 +30,13 @@ NodeCo is an AI-friendly, multiplatform, binary programming language designed fo
    ```
 2. Run a NodeCo program:
    ```sh
-   vm.exe path\to\yourfile.kbj
+   ./vm [path/to/yourfile.kbj]
    ```
+   or
+   ```sh
+   ./compiler [path/to/yourfile.kbj]
+   ```
+   (Use `./vm` or `./compiler` on Unix/macOS, or `vm.exe`/`compiler.exe` on Windows.)
 
 ## Contributing
 We welcome contributions from everyone! To get started:
