@@ -1,13 +1,55 @@
 # NodeCo AI Features & Prompt Guide
 
-## Syntax Guide for AI
+## AI-Friendly Text Syntax (Recommended)
 
-NodeCo is a binary, non-human-readable language, but you can describe programs in a structured pseudocode that maps directly to NodeCo opcodes and binary format. Use the following conventions to help AI generate NodeCo code:
+NodeCo now supports a simple, human-readable text format for writing programs. This is the preferred way for AI and users to generate NodeCo code.
 
 ### General Structure
-- Each program is a sequence of instructions (opcodes and operands).
-- For UI, create elements, set properties, assign event handlers, and show the UI.
-- For logic, use let/assign/add/print as needed.
+- Each program is a sequence of instructions in plain text.
+- For UI, create elements with key-value properties, assign event handlers, and show the UI.
+- For logic, use let/assign/add/print as needed (coming soon to text format).
+
+### Text Syntax
+- `label <id> text="<text>"` — Create a label with the given id and text.
+- `button <id> text="<text>"` — Create a button with the given id and text.
+- `input <id> text="<text>"` — Create an input with the given id and placeholder text.
+- `show_ui` — Show the UI.
+- Lines starting with `#` are comments.
+
+#### Example: Hello World Label
+```
+label 0 text="Hello World"
+show_ui
+```
+
+#### Example: UI with Input and Button
+```
+label 0 text="Name:"
+input 1 text="Type here"
+button 2 text="Submit"
+show_ui
+```
+
+### Property Encoding
+String properties are encoded as:
+- `[property_count][property_id][string_length][string_bytes]...`
+- For example, `label 0 text="Hello"` encodes as:
+  - `0x10 0x01 0x00 0x01 0x01 0x05 48 65 6C 6C 6F` (opcode, element_type, id, property_count, property_id, length, bytes)
+
+### Usage
+1. Write your program in a `.ndc`, `.nodco`, or `.txt` file.
+2. Compile it using the compiler:
+   ```
+   cargo run --release -- ../path/to/your_program.ndc
+   ```
+3. The compiler will output a `.kbj` binary file for the VM.
+4. Run the VM with the `.kbj` file to see your UI.
+
+---
+
+## Legacy: Binary & Pseudocode (for reference)
+
+NodeCo is a binary, non-human-readable language, but you can describe programs in a structured pseudocode that maps directly to NodeCo opcodes and binary format. This is now considered legacy; use the text format above for new code.
 
 ### Pseudocode Syntax
 - `let <var_id> = <value>` → `0x01 <var_id> <value>`
@@ -35,7 +77,7 @@ NodeCo is a binary, non-human-readable language, but you can describe programs i
 - Click: 1
 - Change: 2
 
-### Example: Hello World Button
+### Example: Hello World Button (Legacy)
 Pseudocode:
 ```
 create_ui_element(Button, 0, 1, [Text, "Hello World"])
@@ -50,35 +92,6 @@ Binary (hex):
 13                   // Show UI
 ```
 
-### Example: Add and Print
-Pseudocode:
-```
-let 0 = 5
-let 1 = 10
-add 2 = 0 + 1
-print 2
-```
-Binary (hex):
-```
-4E 43 4F 01
-01 00 05
-01 01 0A
-04 02 00 01
-03 02
-```
-
-### Example: UI with Input and Label
-Pseudocode:
-```
-create_ui_element(Layout, 0, 0, [])
-create_ui_element(Label, 1, 1, [Text, "Name"])
-create_ui_element(Input, 2, 1, [Text, "Type here"])
-create_ui_element(Button, 3, 1, [Text, "Submit"])
-on_ui_event(2, Change, handler_update_label)
-on_ui_event(3, Click, handler_print_input)
-show_ui()
-```
-
 ---
 
-For more, see the [Language Specification](https://github.com/Ikolvi/NodeCo/blob/main/language_spec/ai_lang_spec.md) and [Example Programs](https://github.com/Ikolvi/NodeCo/tree/main/language_spec/examples). 
+For more, see the [Language Specification](language_spec/ai_lang_spec.md) and [Example Programs](language_spec/examples). 
