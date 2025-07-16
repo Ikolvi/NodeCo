@@ -54,3 +54,34 @@ We welcome contributions from everyone! To get started:
 - Be respectful and constructive in code reviews and discussions.
 
 For more details, see the [CONTRIBUTING.md](https://github.com/Ikolvi/NodeCo/blob/main/CONTRIBUTING.md) if available, or open an issue to ask questions. 
+
+# NoDCo Text Format (AI-Friendly)
+
+You can now write NoDCo programs in a simple, human-readable text format and compile them to binary for the VM.
+
+## Example
+
+```
+# Hello World in NoDCo Text
+label 0 "Hello World"
+show_ui
+```
+
+Save this as `hello.ndc`, `hello.nodco`, or `hello.txt`.
+
+## Compiling
+
+Run the compiler with your text file:
+
+```
+cd compiler
+cargo run --release -- ../path/to/hello.ndc
+```
+
+This will produce `hello.kbj` in the same directory.
+
+## Supported Commands
+- `label <id> "<text>"` — Create a label with the given id and text.
+- `show_ui` — Show the UI.
+
+More commands will be added as the language evolves! 

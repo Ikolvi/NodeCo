@@ -80,6 +80,38 @@ show_ui()
 
 ---
 
+## NoDCo Text Format (AI-Friendly)
+
+NoDCo now supports a simple, human-readable text format for writing programs. This format is easy to write, read, and share.
+
+### Syntax
+- `label <id> "<text>"` — Create a label with the given id and text.
+- `show_ui` — Show the UI.
+- Lines starting with `#` are comments.
+
+### Example
+```
+# Hello World in NoDCo Text
+label 0 "Hello World"
+show_ui
+```
+
+### Text to Bytecode Mapping
+| Text Command                | Bytecode (Hex)                        |
+|-----------------------------|----------------------------------------|
+| `label 0 "Hello World"`     | `10 02 00 01 01 48 65 6C ... 64`       |
+| `show_ui`                   | `13`                                   |
+
+### Usage
+1. Write your program in a `.ndc`, `.nodco`, or `.txt` file.
+2. Compile it using the compiler:
+   ```
+   cargo run --release -- ../path/to/your_program.ndc
+   ```
+3. The compiler will output a `.kbj` binary file for the VM.
+
+---
+
 ## Step-by-Step: Integrate egui (eframe) into NodeCo VM
 
 ### 1. Add Dependencies
@@ -200,7 +232,3 @@ fn main() {
 
 - Run `cargo run` in the `vm` directory. You should see a window with a button.
 - Clicking the button will print a message to the console (and can later trigger NodeCo bytecode).
-
----
-
-Would you like me to apply these changes directly to your codebase, or do you want to try implementing them step by step? 

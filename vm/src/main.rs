@@ -3,7 +3,7 @@ fn main() {
     let file_path = if args.len() > 1 {
         &args[1]
     } else {
-        "../language_spec/examples/gui.kbj"
+        "../language_spec/examples/hello.ndc"
     };
     let program = vm::parse_kbj_file(file_path);
     match program {
