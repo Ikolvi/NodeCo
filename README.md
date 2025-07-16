@@ -16,9 +16,9 @@ NodeCo is an AI-friendly, multiplatform, binary programming language designed fo
 - **Easy integration with AI tools and prompt-based code generation**
 
 ## Documentation
-- [Language Specification](https://github.com/yourusername/yourrepo/blob/main/language_spec/ai_lang_spec.md)
-- [AI Features & Prompt Guide](https://github.com/yourusername/yourrepo/blob/main/NodeCo_AI_Features.md)
-- [Example Programs](https://github.com/yourusername/yourrepo/tree/main/language_spec/examples)
+- [Language Specification](https://github.com/Ikolvi/NodeCo/blob/main/language_spec/ai_lang_spec.md)
+- [AI Features & Prompt Guide](https://github.com/Ikolvi/NodeCo/blob/main/NodeCo_AI_Features.md)
+- [Example Programs](https://github.com/Ikolvi/NodeCo/tree/main/language_spec/examples)
 
 > **Tip:** AI tools can use these HTTP URLs to access up-to-date documentation and examples for NodeCo.
 
@@ -34,4 +34,18 @@ NodeCo is an AI-friendly, multiplatform, binary programming language designed fo
    ```
 
 ## Contributing
-See the documentation above for details on extending NodeCo or creating new features. 
+We welcome contributions from everyone! To get started:
+
+- Fork the repository and create your branch from `main`.
+- If you’ve added code, add tests.
+- If you’ve changed APIs, update the documentation.
+- Ensure your code builds and passes all tests.
+- Open a pull request with a clear description of your changes.
+
+### Pull Requests
+- Please keep pull requests focused and atomic.
+- Reference related issues in your PR description.
+- Use clear, descriptive commit messages.
+- Be respectful and constructive in code reviews and discussions.
+
+For more details, see the [CONTRIBUTING.md](https://github.com/Ikolvi/NodeCo/blob/main/CONTRIBUTING.md) if available, or open an issue to ask questions. 
